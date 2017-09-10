@@ -13,20 +13,30 @@
       var w = 20;
       var h = 30;
 
+
       var speed = 2;
 
       var canvas = document.getElementById("mycanvas");
       var ctx = canvas.getContext("2d");
 
       var update = function(){
-        x = x + speed;
+        if(x >= 270){
+          x = 270;
+          speed = - speed;
+        }
+
+        if(x <= 10){
+          x = 10;
+          speed = - speed;
+        }
+
+        x += speed
       }
 
       var draw = function(){
         ctx.clearRect(0,0,500,300);
         ctx.fillStyle = "rgv(200,0,100)";
         ctx.fillRect(x,y,w,h);
-
       }
 
       var step = function(){
