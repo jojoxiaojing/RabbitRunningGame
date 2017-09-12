@@ -94,6 +94,20 @@
 
     };
 
+    //make the player move
+    var movePlayer = function(){
+      player.isMoving = true;
+    };
+
+    //make the player stop
+    var stopPlayer = function(){
+      player.isMoving = false;
+    };
+
+    //event listeners to move player
+    canvas.addEventListener("mousedown", movePlayer);
+    canvas.addEventListener("mouseup", stopPlayer);
+
     //show the game on the screen
     var draw = function() {
       //clear the canvas
