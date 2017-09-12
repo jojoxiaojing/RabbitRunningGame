@@ -1,6 +1,7 @@
 <html>
 <head>
     <title></title>
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
     <style>
         canvas {
             border: 1px solid black;
@@ -17,6 +18,8 @@
     //constants
     var GAME_WIDTH = 640;
     var GAME_HEIGHT = 360;
+
+    var gameLive = true;
 
     //enemies
     var enemies = [
@@ -79,6 +82,17 @@
       enemies.forEach(function(element, index){
         element.y += element.speedY;
 
+        //check for collision with player
+        if(checkCollision(player, element)) {
+          //stop the game
+          gameLive = false;
+
+          alert('Game Over');
+
+          //reload
+          window.location = "";
+        }
+
         //check borders
         if(element.y <= 10) {
           element.y = 10;
@@ -107,6 +121,8 @@
     //event listeners to move player
     canvas.addEventListener("mousedown", movePlayer);
     canvas.addEventListener("mouseup", stopPlayer);
+    canvas.addEventListener('touchstart', movePlayer);
+    canvas.addEventListener('touchend', stopPlayer);
 
     //show the game on the screen
     var draw = function() {
@@ -123,6 +139,14 @@
       enemies.forEach(function(element, index){
         ctx.fillRect(element.x, element.y, element.w, element.h);
       });
+    };
+
+    //check collision
+    var checkCollision = function(rect1, rect2) {
+      var checkLeftTop = (rect1.x >= rect2.x && rect1.x <= rect2.x + rect2.w) || (rect1.y >= rect2. y && rect1.y <= rect2.y + rect2.h);
+      var checkRightBottom = (rect1.x + rect1.w >= rect2.x && rect1.x <= rect2.x + rect2.w) || (rect1.y + rect2.h >= rect2. y && rect1.y <= rect2.y + rect2.h);
+
+      return closeOnHeight && closeOnWidth;
     };
 
     //gets executed multiple times per second
