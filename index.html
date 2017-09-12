@@ -26,7 +26,7 @@
       {
         x: 100, //x coordinate
         y: 100, //y coordinate
-        speedY: 1, //speed in Y
+        speedY: 2, //speed in Y
         w: 40, //width
         h: 40 //heght
       },
@@ -47,7 +47,7 @@
       {
         x: 450,
         y: 100,
-        speedY: 7,
+        speedY: 2,
         w: 40,
         h: 40
       }
@@ -63,12 +63,31 @@
       isMoving: false
     }
 
+    //the goal object
+    var goal = {
+      x: 580,
+      y: 160,
+      w: 50,
+      h: 36
+    }
+
     //grab the canvas and context
     var canvas = document.getElementById("mycanvas");
     var ctx = canvas.getContext("2d");
 
     //update the logic
     var update = function() {
+
+      //check if you've won the game
+      if(checkCollision(player, goal)) {
+        //stop the game
+        gameLive = false;
+
+        alert('You\'ve won!');
+
+        //reload page
+        window.location = "";
+      }
 
       //update player
       if(player.isMoving) {
@@ -139,14 +158,32 @@
       enemies.forEach(function(element, index){
         ctx.fillRect(element.x, element.y, element.w, element.h);
       });
+
+      //draw goal
+      ctx.fillStyle = "rgb(128,128,0)";
+      ctx.fillRect(goal.x, goal.y, goal.w, goal.h);
+
     };
+
+
+
 
     //check collision
     var checkCollision = function(rect1, rect2) {
-      var checkLeftTop = (rect1.x >= rect2.x && rect1.x <= rect2.x + rect2.w) || (rect1.y >= rect2. y && rect1.y <= rect2.y + rect2.h);
-      var checkRightBottom = (rect1.x + rect1.w >= rect2.x && rect1.x <= rect2.x + rect2.w) || (rect1.y + rect2.h >= rect2. y && rect1.y <= rect2.y + rect2.h);
 
-      return closeOnHeight && closeOnWidth;
+      var pointInsideRec = function(cx, cy, rec) {
+        return (cx >= rec.x && cx <= rec.x + rec.w)
+            && (cy >= rec.y && cy <= rec.y + rec.h);
+      };
+
+
+      var checkLeftTop = pointInsideRec(rect1.x, rect1.y, rect2);
+      var checkRightBottom = pointInsideRec(rect1.x + rect1.w, rect1.y + rect1.h, rect2);
+      var checkLeftBottom = pointInsideRec(rect1.x, rect1.y + rect1.h, rect2);
+      var checkRightTop = pointInsideRec(rect1.x + rect1.w, rect1.y, rect2);
+
+
+      return checkLeftTop || checkRightBottom || checkLeftBottom || checkRightTop;
     };
 
     //gets executed multiple times per second
@@ -155,7 +192,10 @@
       update();
       draw();
 
-      window.requestAnimationFrame(step);
+      if(gameLive) {
+        window.requestAnimationFrame(step);
+      }
+
     };
 
     //initial kick
