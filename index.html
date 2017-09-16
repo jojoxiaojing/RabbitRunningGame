@@ -5,71 +5,74 @@
     <style>
         canvas {
             border: 1px solid black;
-            width: 100%;
+            width: 1280px;
+            height: 720px;
         }
     </style>
 </head>
 <body>
-<h1>Player and Load Event</h1>
-<canvas id="mycanvas" width="640" height="360" ></canvas>
+<h1>Rabbit Running</h1>
+<canvas id="mycanvas" width="1280" height="720" ></canvas>
 <script>
   window.addEventListener('load', function(){
 
     //constants
-    var GAME_WIDTH = 640;
-    var GAME_HEIGHT = 360;
+    var GAME_WIDTH = 1280;
+    var GAME_HEIGHT = 720;
 
     var gameLive = true;
 
     //enemies
     var enemies = [
       {
-        x: 100, //x coordinate
+        x: 200, //x coordinate
         y: 100, //y coordinate
-        speedY: 2, //speed in Y
-        w: 40, //width
-        h: 40 //heght
+        speedY: 4, //speed in Y
+        w: 80, //width
+        h: 80 //heght
       },
       {
-        x: 260,
+        x: 520,
         y: 100,
-        speedY: 2,
-        w: 40,
-        h: 40
+        speedY: 4,
+        w: 80,
+        h: 80
       },
       {
-        x: 380,
+        x: 760,
         y: 100,
-        speedY: 3,
-        w: 40,
-        h: 40
+        speedY: 6,
+        w: 80,
+        h: 80
       },
       {
-        x: 450,
+        x: 900,
         y: 100,
-        speedY: 2,
-        w: 40,
-        h: 40
+        speedY: 8,
+        w: 80,
+        h: 80
       }
     ];
 
     //player object
     var player = {
       x: 10,
-      y: 160,
-      speedX: 2,
-      w: 40,
-      h: 40,
+      y: 340,
+      speedX: 4,
+      w: 90,
+      h: 90,
       isMoving: false
     }
 
     //the goal object
     var goal = {
-      x: 580,
-      y: 160,
-      w: 50,
-      h: 36
-    }
+      x: 1130,
+      y: 360,
+      w: 100,
+      h: 72
+    };
+
+    var sprites = {};
 
     //grab the canvas and context
     var canvas = document.getElementById("mycanvas");
@@ -118,8 +121,8 @@
           //element.speedY = element.speedY * -1;
           element.speedY *= -1;
         }
-        else if(element.y >= GAME_HEIGHT - 50) {
-          element.y = GAME_HEIGHT - 50;
+        else if(element.y >= GAME_HEIGHT - 80) {
+          element.y = GAME_HEIGHT - 80;
           element.speedY *= -1;
         }
       });
@@ -148,21 +151,36 @@
       //clear the canvas
       ctx.clearRect(0,0,GAME_WIDTH,GAME_HEIGHT);
 
+      //draw background
+      // ctx.fillStyle = "#8e95a3";
+      // ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+
 
       //draw player
-      ctx.fillStyle = "#00FF00";
-      ctx.fillRect(player.x, player.y, player.w, player.h);
+      ctx.drawImage(sprites.player, player.x, player.y, player.w, player.h);
 
       //draw enemies
-      ctx.fillStyle = "#3333FF";
       enemies.forEach(function(element, index){
-        ctx.fillRect(element.x, element.y, element.w, element.h);
-      });
+        ctx.drawImage(sprites.enemy, element.x, element.y, element.w, element.h);
+      })
 
       //draw goal
-      ctx.fillStyle = "rgb(128,128,0)";
-      ctx.fillRect(goal.x, goal.y, goal.w, goal.h);
+      ctx.drawImage(sprites.goal, goal.x, goal.y, goal.w, goal.h);
 
+    };
+
+    var load = function() {
+      sprites.player = new Image();
+      sprites.player.src = 'img/rabbit2.png';
+
+      sprites.background = new Image();
+      sprites.background.src = 'img/background.png';
+
+      sprites.enemy = new Image();
+      sprites.enemy.src = 'img/wolf1.png';
+
+      sprites.goal = new Image();
+      sprites.goal.src = 'img/carrot.png';
     };
 
 
@@ -199,6 +217,7 @@
     };
 
     //initial kick
+    load();
     step();
   });
 
