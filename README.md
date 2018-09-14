@@ -1,0 +1,1 @@
+This is a chicken running game based on HTML and Javascript
