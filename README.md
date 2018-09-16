@@ -1,1 +1,1 @@
-This is a chicken running game based on HTML and Javascript
+This is a rabbit running game based on HTML and Javascript
